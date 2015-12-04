@@ -30,8 +30,6 @@ pts_gcs = spTransform(pts, leaflet:::epsg4326)
 leaflet() %>%
   addTiles() %>%
   addMarkers(data = pts_gcs)
-```{r}
-
 ```
 ###create map with popups
 ```{r}
@@ -83,7 +81,6 @@ leaflet() %>%
 
 ```
 ###convert to GeoJSON
-
 ```{r}
 
 library(rgdal)
