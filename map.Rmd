@@ -81,7 +81,7 @@ leaflet() %>%
 
 ```
 ###convert to GeoJSON
-```{r}
+
 
 library(rgdal)
 
@@ -105,11 +105,6 @@ for (fc in ogrListLayers(gdb)){
   
   # move file
   file.rename(tmp, geo)
-}
-
-```
-
-
 ```
 
   
