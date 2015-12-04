@@ -9,6 +9,7 @@ output:
 ---
 
 ## Create Map of Points
+
 ```{r}
 # load packages
 suppressWarnings(suppressPackageStartupMessages({
@@ -31,21 +32,27 @@ leaflet() %>%
   addTiles() %>%
   addMarkers(data = pts_gcs)
 ```
-###create map with popups
+
+## Create Map with Popups
+
 ```{r}
 # create map with popups
 leaflet() %>%
   addTiles() %>%
   addMarkers(data = pts_gcs, popup=~sprintf('id: %d', id)) 
 ```
-###change up the basemap
+
+## Change Up the Basemap
+
 ```{r}
 # create map with Stamen.Toner basemap
 leaflet() %>%  
   addProviderTiles('Stamen.Toner') %>%
   addMarkers(data = pts_gcs, popup=~sprintf('id: %d', id))
 ```
-###points lines and polygons
+
+## Add Points, Lines and Polygons
+
 ```{r}
 # read points, lines and polygons from geodatabase
 pts_gcs  = readOGR(gdb, 'pts_tree', verbose=F)    %>% spTransform(leaflet:::epsg4326)
@@ -60,7 +67,9 @@ leaflet() %>%
 
 
 ```
-###map with raster
+
+## Map with Raster
+
 ```{r}
 library(raster)
 
@@ -80,16 +89,17 @@ leaflet() %>%
   addLegend(pal=pal, values=values(r), title='Habitats')
 
 ```
-###convert to GeoJSON
 
+## Convert to GeoJSON
 
+```{r}
 library(rgdal)
 
 gdb = 'H:/Fall 2015/Advanced GIS/lab3/golf.gdb'
 dir = 'H:/Fall 2015/Advanced GIS/lab5/adv-gis/data'
 
-# iterate through features in geodatabase
-for (fc in ogrListLayers(gdb)){
+## iterate through features in geodatabase
+for (fc in ogrListLayers(gdb))
   
   # print paths
   geo = sprintf('%s/%s.geojson', dir, fc)
@@ -107,4 +117,4 @@ for (fc in ogrListLayers(gdb)){
   file.rename(tmp, geo)
 ```
 
-  
+
