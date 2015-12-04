@@ -9,8 +9,6 @@ output:
 ---
 
 ## Create Map of Points
-
-
 ```{r}
 # load packages
 suppressWarnings(suppressPackageStartupMessages({
@@ -32,22 +30,29 @@ pts_gcs = spTransform(pts, leaflet:::epsg4326)
 leaflet() %>%
   addTiles() %>%
   addMarkers(data = pts_gcs)
+```{r}
 
+```
+###create map with popups
+```{r}
 # create map with popups
 leaflet() %>%
   addTiles() %>%
   addMarkers(data = pts_gcs, popup=~sprintf('id: %d', id)) 
-
+```
+###change up the basemap
+```{r}
 # create map with Stamen.Toner basemap
 leaflet() %>%  
   addProviderTiles('Stamen.Toner') %>%
   addMarkers(data = pts_gcs, popup=~sprintf('id: %d', id))
-
+```
+###points lines and polygons
+```{r}
 # read points, lines and polygons from geodatabase
 pts_gcs  = readOGR(gdb, 'pts_tree', verbose=F)    %>% spTransform(leaflet:::epsg4326)
 lns_gcs  = readOGR(gdb, 'lns_cart', verbose=F)    %>% spTransform(leaflet:::epsg4326)
 plys_gcs = readOGR(gdb, 'plys_bunker', verbose=F) %>% spTransform(leaflet:::epsg4326)
-
 # map with lines and polygons
 leaflet() %>%  
   addProviderTiles('Stamen.Toner') %>%
@@ -55,6 +60,10 @@ leaflet() %>%
   addPolylines(data=lns_gcs) %>%
   addMarkers(data=pts_gcs, popup=~sprintf('id: %d', id))
 
+
+```
+###map with raster
+```{r}
 library(raster)
 
 # set path to your final chosen classified image
@@ -71,6 +80,11 @@ leaflet() %>%
   addProviderTiles('Stamen.Toner') %>%
   addRasterImage(r, colors=pal, project=F) %>%
   addLegend(pal=pal, values=values(r), title='Habitats')
+
+```
+###convert to GeoJSON
+
+```{r}
 
 library(rgdal)
 
@@ -96,7 +110,9 @@ for (fc in ogrListLayers(gdb)){
   file.rename(tmp, geo)
 }
 
-<script src="https://embed.github.com/view/geojson/iandouglasbell/adv-gis/gh-pages/data/cart_paths.geojson"></script>
+```
+
+
 ```
 
   
