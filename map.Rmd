@@ -71,6 +71,32 @@ leaflet() %>%
   addProviderTiles('Stamen.Toner') %>%
   addRasterImage(r, colors=pal, project=F) %>%
   addLegend(pal=pal, values=values(r), title='Habitats')
+
+library(rgdal)
+
+gdb = 'H:/Fall 2015/Advanced GIS/lab3/golf.gdb'
+dir = 'H:/Fall 2015/Advanced GIS/lab5/adv-gis/data'
+
+# iterate through features in geodatabase
+for (fc in ogrListLayers(gdb)){
+  
+  # print paths
+  geo = sprintf('%s/%s.geojson', dir, fc)
+  tmp = tempfile()
+  cat(sprintf('gdb/fc: %s/%s\n  -> tmp: %s\n  -> geo: %s\n', gdb, fc, tmp, geo))
+  
+  # read in feature class and project to geographic
+  sp = readOGR(gdb, fc) %>%
+    spTransform(leaflet:::epsg4326)
+
+  # output to geojson
+  writeOGR(sp, dsn=tmp, layer='dummy', driver='GeoJSON')
+  
+  # move file
+  file.rename(tmp, geo)
+}
+
+<script src="https://embed.github.com/view/geojson/iandouglasbell/adv-gis/gh-pages/data/cart_paths.geojson"></script>
 ```
 
   
